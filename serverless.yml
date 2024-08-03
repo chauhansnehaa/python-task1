@@ -1,27 +1,33 @@
 org: chauhansneha
-service: emailService
+service: task1-python
 
 provider:
   name: aws
-  runtime: python3.12
-
-
-iamRoleStatements:
-  - Effect: Allow
-    Action:
-      - ses:SendEmail
-    Resource: "arn:aws:ses:ap-south-1:010928218222:identity/snehachauhan3005@gmail.com"
+  runtime: python3.8
+  region: ap-south-1
+  endpoint: http://localhost:4566
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - ses:SendEmail
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: "*"
 
 plugins:
   - serverless-offline
+  - serverless-localstack
+
+custom:
+  localstack:
+    stages:
+      - local
 
 functions:
   sendEmail:
-    handler: handler.send_Email
+    handler: handler.send_email
     events:
       - http:
           path: send-email
           method: post
-          cors: true
-
-
