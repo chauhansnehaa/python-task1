@@ -1,0 +1,27 @@
+org: chauhansneha
+service: emailService
+
+provider:
+  name: aws
+  runtime: python3.12
+
+
+iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - ses:SendEmail
+    Resource: "arn:aws:ses:ap-south-1:010928218222:identity/snehachauhan3005@gmail.com"
+
+plugins:
+  - serverless-offline
+
+functions:
+  sendEmail:
+    handler: handler.send_Email
+    events:
+      - http:
+          path: send-email
+          method: post
+          cors: true
+
+
